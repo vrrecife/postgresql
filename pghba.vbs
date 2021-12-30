@@ -8,6 +8,8 @@ Do Until objFile.AtEndOfStream
 	End If
 	If strNextLine = "# IPv4 local connections:" then
 		strLine = strLine + " host    all             all             0.0.0.0/0            trust"
+		strNewText = strLine + vbcrlf
 	End If
 	WScript.Echo strLine
+	WScript.Echo strNewText
 Loop
