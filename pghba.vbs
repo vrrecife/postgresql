@@ -3,8 +3,11 @@ strFile = "C:\Program Files\PostgreSQL\12\data\pg_hba.conf"
 Set objFile = objFS.OpenTextFile(strFile)
 Do Until objFile.AtEndOfStream
     strLine = objFile.ReadLine
+	If strNextLine = "# IPv4 local connections:" then
+		strLine = strLine + " host    all             all             0.0.0.0/0            trust"
+	End If
 	If InStr(strLine,"host    all             all             127.0.0.1/32            md5")> 0 Then
-		strLine = Replace(strLine,"host    all             all             127.0.0.1/32            md5","host    all             all             127.0.0.1/32            trust")
+		strLine = Replace(strLine,"host    all             all             127.0.0.1/32            md5","trust")
 	End If
 	WScript.Echo strLine
 Loop
