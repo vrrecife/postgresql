@@ -3,8 +3,8 @@ strFile = "C:\Program Files\PostgreSQL\12\data\pg_hba.conf"
 Set objFile = objFS.OpenTextFile(strFile)
 Do Until objFile.AtEndOfStream
     strLine = objFile.ReadLine
-	If InStr(strLine,"MD5")> 0 Then
-		strLine = Replace(strLine,"MD5","TRUST")
+	If InStr(strLine,"md5")> 0 Then
+		strLine = Replace(strLine,"md5","TRUST")
 	End If
 	WScript.Echo strLine
 Loop
