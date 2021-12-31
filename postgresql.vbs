@@ -1,3 +1,4 @@
+'Criado por Thiago Patriota - VR SOFTWARE - 31/12/2021
 strAnswer = InputBox("INFORME A QUANTIDADE DE CONEXOES AO BANCO (TOTAL + 10%):", "NUMERO DE CONEXOES AO BANCO", "50")
 strComputer2 = "."
 Set objWMI = GetObject("winmgmts:" _
