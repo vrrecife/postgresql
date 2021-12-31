@@ -1,4 +1,4 @@
-strAnswer = InputBox("INFORME A QUANTIDADE DE CONEXOES AO BANCO (TOTAL + 10%):")
+strAnswer = InputBox("INFORME A QUANTIDADE DE CONEXOES AO BANCO (TOTAL + 10%):", "NUMERO DE CONEXOES AO BANCO", "50")
 strComputer2 = "."
 Set objWMI = GetObject("winmgmts:" _
 & "{impersonationLevel=impersonate}!\\" _ 
