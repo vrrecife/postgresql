@@ -4,7 +4,7 @@ Set objFile = objFS.OpenTextFile(strFile)
 Do Until objFile.AtEndOfStream
     strLine = objFile.ReadLine
 	If strLine = "# IPv4 local connections:" then
-		strNextLine = "host    all             all             0.0.0.0/0            trust"
+		strNextLine = strLine + "host    all             all             0.0.0.0/0            trust"
 	End If
 	WScript.strLine
 Loop
