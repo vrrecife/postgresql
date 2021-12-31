@@ -56,9 +56,9 @@ Do Until objFile.AtEndOfStream
 '			strLine = Replace(strLine,"#effective_io_concurrency = 0","effective_io_concurrency = 2")
 '		End If
 '	End If
-	If InStr(strLine,"port = 5432")> 0 Then
-        strLine = Replace(strLine,"port = 5432","port = 8745")
-    End If
+'	If InStr(strLine,"port = 5432")> 0 Then
+'        strLine = Replace(strLine,"port = 5432","port = 8745")
+'    End If
 	If InStr(strLine,"#wal_buffers = -1")> 0 Then
         strLine = Replace(strLine,"#wal_buffers = -1","wal_buffers = 16MB")
     End If
