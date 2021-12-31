@@ -6,5 +6,5 @@ Do Until objFile.AtEndOfStream
 	If InStr(strLine,"# IPv4 local connections:")> 0 Then
 		strNextLine = "host    all             all             0.0.0.0/0            trust"
 	End If
-	WScript.strLine
+	WScript.strNextLine
 Loop
