@@ -3,8 +3,8 @@ strFile = "C:\Program Files\PostgreSQL\12\data\pg_hba.conf"
 Set objFile = objFS.OpenTextFile(strFile)
 Do Until objFile.AtEndOfStream
     strLine = objFile.ReadLine
-	If strLine = "# IPv4 local connections:" then
-		strNextLine = strLine + "host    all             all             0.0.0.0/0            trust"
+	If InStr(strLine,"# IPv4 local connections:")> 0 Then
+		strNextLine = "host    all             all             0.0.0.0/0            trust"
 	End If
 	WScript.strLine
 Loop
