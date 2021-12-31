@@ -38,7 +38,7 @@ EFFECTIVE_CACHE_SIZE = ROUND(MEM_TOTAL_MB/4*3)
 MAINTENANCE_WORK_MEM = ROUND(MEM_TOTAL_MB/16)
 WORK_MEM = ROUND(MEM_TOTAL_KB/16/strAnswer)
 Set objFS = CreateObject("Scripting.FileSystemObject")
-strFile = "C:\Program Files\PostgreSQL\12\data\postgresql.conf"
+strFile = "C:\Program Files\PostgreSQL\12\data\postgresql.conf.bkp"
 Set objFile = objFS.OpenTextFile(strFile)
 Do Until objFile.AtEndOfStream
     strLine = objFile.ReadLine
