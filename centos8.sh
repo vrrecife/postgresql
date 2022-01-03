@@ -253,6 +253,12 @@ firewall-cmd --reload
 
 systemctl restart smb nmb firewalld
 
+wget https://github.com/vrrecife/postgresql/raw/main/bk_vr-yum -O /usr/bin/bk_vr-yum
+
+sed -i '/# *  *  *  *  * user-name  command to be executed/ s/# *  *  *  *  * user-name  command to be executed/ 30 23 *  *  * root  /usr/bin/bk_vr-yum/' /etc/crontab
+
+chmod 777 /usr/bin/bk_vr-yum
+
 echo -e "\nConfigurações finalizadas, reinicie o servidor! =D"
 
 updatedb
