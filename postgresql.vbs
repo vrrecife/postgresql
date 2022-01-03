@@ -41,11 +41,13 @@ Set objFS = CreateObject("Scripting.FileSystemObject")
 strFile = "C:\Program Files\PostgreSQL\12\data\postgresql.conf"
 Set objFile = objFS.OpenTextFile(strFile)
 Do Until objFile.AtEndOfStream
-    strLine = objFile.ReadLine
+	strLine = objFile.ReadLine
 	If InStr(strLine,"#random_page_cost = 4.0")> 0 Then
 		If strComputer2 = 4 Then
 			strLine = Replace(strLine,"#random_page_cost = 4.0","random_page_cost = 1.1")
 		ElseIf strComputer2 = 3 Then
+			strLine = Replace(strLine,"#random_page_cost = 4.0","random_page_cost = 4.0")
+		Else
 			strLine = Replace(strLine,"#random_page_cost = 4.0","random_page_cost = 4.0")
 		End If
 	End If
@@ -57,17 +59,17 @@ Do Until objFile.AtEndOfStream
 '		End If
 '	End If
 '	If InStr(strLine,"port = 5432")> 0 Then
-'        strLine = Replace(strLine,"port = 5432","port = 8745")
-'    End If
+'  		strLine = Replace(strLine,"port = 5432","port = 8745")
+'    	End If
 	If InStr(strLine,"#wal_buffers = -1")> 0 Then
-        strLine = Replace(strLine,"#wal_buffers = -1","wal_buffers = 16MB")
-    End If
+        	strLine = Replace(strLine,"#wal_buffers = -1","wal_buffers = 16MB")
+    	End If
 	If InStr(strLine,"#default_statistics_target = 100")> 0 Then
-        strLine = Replace(strLine,"#default_statistics_target = 100","default_statistics_target = 100")
-    End If
+        	strLine = Replace(strLine,"#default_statistics_target = 100","default_statistics_target = 100")
+    	End If
 	If InStr(strLine,"max_connections = 100")> 0 Then
-        strLine = Replace(strLine,"max_connections = 100","max_connections = "&strAnswer)
-    End If
+        	strLine = Replace(strLine,"max_connections = 100","max_connections = "&strAnswer)
+    	End If
 	If InStr(strLine,"shared_buffers = 128MB")> 0 Then
 		strLine = Replace(strLine,"shared_buffers = 128MB","shared_buffers = "&SHARED_BUFFERS&"MB")
 	End If
@@ -99,14 +101,14 @@ Do Until objFile.AtEndOfStream
 		strLine = Replace(strLine,"#cpu_tuple_cost = 0.01","cpu_tuple_cost = 0.03")
 	End If
 	If InStr(strLine,"#tcp_keepalives_idle = 0")> 0 Then
-        strLine = Replace(strLine,"#tcp_keepalives_idle = 0","tcp_keepalives_idle = 10")
-    End If
+        	strLine = Replace(strLine,"#tcp_keepalives_idle = 0","tcp_keepalives_idle = 10")
+    	End If
 	If InStr(strLine,"#tcp_keepalives_interval = 0")> 0 Then
-        strLine = Replace(strLine,"#tcp_keepalives_interval = 0","tcp_keepalives_interval = 10")
-    End If
+        	strLine = Replace(strLine,"#tcp_keepalives_interval = 0","tcp_keepalives_interval = 10")
+	End If
 	If InStr(strLine,"#tcp_keepalives_count = 0")> 0 Then
-        strLine = Replace(strLine,"#tcp_keepalives_count = 0","tcp_keepalives_count = 10")
-    End If
+		strLine = Replace(strLine,"#tcp_keepalives_count = 0","tcp_keepalives_count = 10")
+	End If
 	If InStr(strLine,"#effective_cache_size = 4GB")> 0 Then
 		strLine = Replace(strLine,"#effective_cache_size = 4GB","effective_cache_size = "&EFFECTIVE_CACHE_SIZE&"MB")
 	End If
