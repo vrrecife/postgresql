@@ -31,28 +31,16 @@ else
 	sleep 2
 fi
 
-printf "\n\n"
-read -n 1 -s -r -p "Pressione qualquer tecla para continuar"
-printf "\n\n"
-
 clear
 
 echo -e "\nAtualizando os repositórios DNF."
 dnf update 2> /dev/null && dnf upgrade 2> /dev/null
-
-printf "\n\n"
-read -n 1 -s -r -p "Pressione qualquer tecla para continuar"
-printf "\n\n"
 
 # Instalando pacotes e utilitários.
 
 echo -e "\nInstalando utilitários e dependências necessárias..."
 sleep 2
 dnf install wget firewalld samba samba-client samba-common 2> /dev/null
-
-printf "\n\n"
-read -n 1 -s -r -p "Pressione qualquer tecla para continuar"
-printf "\n\n"
 
 clear
 
@@ -70,10 +58,6 @@ systemctl start postgresql-12
 cp /etc/samba/smb.conf /etc/samba/smb.conf.backup
 cp /var/lib/pgsql/12/data/postgresql.conf /var/lib/pgsql/12/data/postgresql.conf.backup
 cp /var/lib/pgsql/12/data/pg_hba.conf /var/lib/pgsql/12/data/pg_hba.conf.backup
-
-printf "\n\n"
-read -n 1 -s -r -p "Pressione qualquer tecla para continuar"
-printf "\n\n"
 
 clear
 
@@ -183,10 +167,6 @@ sed -i '/max_wal_size/ s/1/4/' /var/lib/pgsql/12/data/postgresql.conf
 sed -i '/#standard_conforming_strings/ s/on/off/' /var/lib/pgsql/12/data/postgresql.conf
 sed -i '/#standard_conforming_strings/ s/#standard_conforming_strings/standard_conforming_strings/' /var/lib/pgsql/12/data/postgresql.conf
 
-printf "\n\n"
-read -n 1 -s -r -p "Pressione qualquer tecla para continuar"
-printf "\n\n"
-
 # Alterando parâmetro de confiabilidade e criando roles.
 
 sed -i '/local/ s/md5/trust/' /var/lib/pgsql/12/data/pg_hba.conf
@@ -198,10 +178,6 @@ sed -i '/host/ s/peer/trust/' /var/lib/pgsql/12/data/pg_hba.conf
 systemctl restart postgresql-12
 
 chkconfig postgresql-12 on
-
-printf "\n\n"
-read -n 1 -s -r -p "Pressione qualquer tecla para continuar"
-printf "\n\n"
 
 echo -n "Alterando usuário POSTGRES: "
 /usr/bin/psql -U postgres -p 8745 -c "ALTER USER postgres WITH ENCRYPTED PASSWORD 'VrPost@Server'"
@@ -245,10 +221,6 @@ echo -n "Criando database VR: "
 
 systemctl restart postgresql-12
 
-printf "\n\n"
-read -n 1 -s -r -p "Pressione qualquer tecla para continuar"
-printf "\n\n"
-
 # Configurando o compartilhamento público via samba.
 # Permissionamento define que na pasta VR todos terão acessos, apenas na subpasta backup as permissões são somente de leitura.
 
@@ -262,10 +234,6 @@ chcon -t samba_share_t /vr
 chcon -t samba_share_t /vr/backup
 
 echo -e "[global]\n\tworkgroup = WORKGROUP\n\tserver string = %h server (Samba %v)\n\tsecurity = user\n\tpassdb backend = tdbsam\n\tprinting = cups\n\tprintcap name = cups\n\tcups options = raw\n\tmap to guest = bad user\n\tguest ok = yes\n[vr]\n\tpath = /vr\n\tcomment = Compartilhamento VR\n\tpublic = yes\n\twritable = yes\n\n[backup]\n\tpath = /vr/backup\n\tcomment = Pasta de Backups DB\n\twritable = no" > /etc/samba/smb.conf
-
-printf "\n\n"
-read -n 1 -s -r -p "Pressione qualquer tecla para continuar"
-printf "\n\n"
 
 # Adicionando regras de firewall.
 
@@ -284,8 +252,6 @@ echo -e "\nRecarregando o módulo FIREWALLD: "
 firewall-cmd --reload
 
 systemctl restart smb nmb firewalld
-
-https://drive.google.com/file/d/1sD4TqpU182xCH2Q7NVmeUTu_eVRk7irk/view?usp=sharing
 
 echo -e "\nConfigurações finalizadas, reinicie o servidor! =D"
 
