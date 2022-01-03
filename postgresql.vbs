@@ -7,7 +7,7 @@ Set objWMI = GetObject("winmgmts:" _
 Set colComputer2 = objWMI.ExecQuery _
 ("Select * from MSFT_PhysicalDisk")
 For Each objComputer in colComputer2 
-strComputer2=objComputer.MediaType
+	strComputer2=objComputer.MediaType
 Next
 strComputer1 = "."
 Set objWMI = GetObject("winmgmts:" _
@@ -16,7 +16,7 @@ Set objWMI = GetObject("winmgmts:" _
 Set colComputer1 = objWMI.ExecQuery _
 ("Select * from Win32_Processor")
 For Each objComputer in colComputer1 
-strComputer1=objComputer.NumberOfCores
+	strComputer1=objComputer.NumberOfCores
 Next
 strComputer = "."
 Set objWMI = GetObject("winmgmts:" _
@@ -25,7 +25,7 @@ Set objWMI = GetObject("winmgmts:" _
 Set colComputer = objWMI.ExecQuery _
 ("Select * from Win32_ComputerSystem")
 For Each objComputer in colComputer 
-strComputer=objComputer.TotalPhysicalMemory
+	strComputer=objComputer.TotalPhysicalMemory
 Next
 CPU_CORES = strComputer1
 CPU_CORES_PARALLEL = CPU_CORES/2
@@ -56,11 +56,13 @@ Do Until objFile.AtEndOfStream
 '			strLine = Replace(strLine,"#effective_io_concurrency = 0","effective_io_concurrency = 200")
 '		ElseIf strComputer2 = 3 Then
 '			strLine = Replace(strLine,"#effective_io_concurrency = 0","effective_io_concurrency = 2")
+'		Else
+'			strLine = Replace(strLine,"#effective_io_concurrency = 0","effective_io_concurrency = 2")
 '		End If
 '	End If
-'	If InStr(strLine,"port = 5432")> 0 Then
-'  		strLine = Replace(strLine,"port = 5432","port = 8745")
-'    	End If
+	If InStr(strLine,"port = 5432")> 0 Then
+		strLine = Replace(strLine,"port = 5432","port = 8745")
+	End If
 	If InStr(strLine,"#wal_buffers = -1")> 0 Then
         	strLine = Replace(strLine,"#wal_buffers = -1","wal_buffers = 16MB")
     	End If
