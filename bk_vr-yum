@@ -1,0 +1,48 @@
+#!/bin/bash
+#PARAMETROS PARA BACKUP
+HOJE="loja_"$(date +%d%m%y%H%M)
+NOME="vr"
+EXTENSAO=".bk"
+EXTENSAO2=".tar.gz"
+ARQUIVO=$NOME"_"$HOJE$EXTENSAO
+PATH_BK="/vr/backup"
+DATA=$(date +%m/%d/%yy) 
+PGPASSWORD=VrPost@Server
+
+#PARAMETROS PARA BACKUP DE SEGURANCA
+#PATH_SEGURANCA="//192.168.0.203/vrbackup"
+#PATH_SEGURANCA_MONT="/mnt/backup"
+#USR_AUTENTICACAO="admin"
+#SENHA_AUTENTICACAO="admin"
+
+if /usr/pgsql-12/bin/pg_dump -U postgres -Fc -p 8745 $NOME > $PATH_BK/$ARQUIVO
+then
+#smbmount $PATH_SEGURANCA $PATH_SEGURANCA_MONT -o username=$USR_AUTENTICACAO,password=$SENHA_AUTENTICACAO
+
+#tar cvfz $PATH_SEGURANCA_MONT/database/$NOME"_"$HOJE$EXTENSAO2 $PATH_BK/$ARQUIVO
+
+/usr/pgsql-12/bin/psql -U postgres -Fc -p 8745 $NOME -c "DELETE FROM backup"
+
+/usr/pgsql-12/bin/psql -U postgres -Fc -p 8745 $NOME -c "INSERT INTO backup (data,enviado) VALUES (now(), false)"
+else
+# erro na execucao do backup
+exit 1
+fi
+
+/usr/bin/vacuumdb -U postgres -p 8745 -d $NOME --analyze
+
+/usr/bin/reindexdb -U postgres -p 8745 -d $NOME
+
+sudo systemctl restart postgresql-12.service
+
+#parametro para apagar os backups
+
+#find /mnt/backup/database -type f -mtime +6 -delete
+find /vr/backup -type f -mtime +6 -delete
+#cd
+
+echo -E "BACKUP CONCLUIDO"
+
+#umount $PATH_SEGURANCA_MONT
+exit 0
+
