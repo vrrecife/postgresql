@@ -124,5 +124,8 @@ Do Until objFile.AtEndOfStream
 	If InStr(strLine,"max_wal_size = 1GB")> 0 Then
 		strLine = Replace(strLine,"max_wal_size = 1GB","max_wal_size = 4GB")
 	End If
+	If InStr(strLine,"#standard_conforming_strings = on")> 0 Then
+		strLine = Replace(strLine,"#standard_conforming_strings = on","standard_conforming_strings = off")
+	End If
 	WScript.Echo strLine
 Loop
