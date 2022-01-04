@@ -226,15 +226,14 @@ systemctl restart postgresql-12
 # Permissionamento define que na pasta VR todos terão acessos, apenas na subpasta backup as permissões são somente de leitura.
 
 mkdir -p /vr/backup
-chmod -R 770 /vr
-chmod -R 750 /vr/backup
+chmod -R 775 /vr
 # chown -R root:nobody /vr
 # touch /vr/backup/.lock
 # chmod 600 /vr/backup/.lock
 chcon -t samba_share_t /vr
-chcon -t samba_share_t /vr/backup
+# chcon -t samba_share_t /vr/backup
 
-echo -e "[global]\n\tworkgroup = WORKGROUP\n\tserver string = %h server (Samba %v)\n\tsecurity = user\n\tpassdb backend = tdbsam\n\tprinting = cups\n\tprintcap name = cups\n\tcups options = raw\n\tmap to guest = bad user\n\tguest ok = yes\n[vr]\n\tpath = /vr\n\tcomment = Compartilhamento VR\n\tpublic = yes\n\twritable = yes\n\n[backup]\n\tpath = /vr/backup\n\tcomment = Pasta de Backups DB\n\twritable = no" > /etc/samba/smb.conf
+echo -e "[global]\n\tworkgroup = WORKGROUP\n\tserver string = %h server (Samba %v)\n\tsecurity = user\n\tpassdb backend = tdbsam\n\tprinting = cups\n\tprintcap name = cups\n\tcups options = raw\n\tmap to guest = bad user\n\tguest ok = yes\n[vr]\n\tpath = /vr\n\tcomment = Compartilhamento VR\n\tpublic = yes\n\twritable = yes" > /etc/samba/smb.conf
 
 # Adicionando regras de firewall.
 
@@ -262,6 +261,8 @@ cp /etc/crontab /etc/crontab.backup
 echo "  30 23 *  *  * root  /usr/bin/bk_vr-yum" >> /etc/crontab
 
 chmod 777 /usr/bin/bk_vr-yum
+
+systemctl enable smb nmb
 
 systemctl restart smb nmb firewalld crond
 
