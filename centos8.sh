@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script em desenvolvimento para instalações do CentOS 8 no padrão VR v1.1 - Autor: Rafael Bardini / Thiago Patriota
+# Thiago Patriota
 
 # Definição de hostname personalizado.
 
@@ -181,38 +181,8 @@ chkconfig postgresql-12 on
 
 echo -n "Alterando usuário POSTGRES: "
 /usr/bin/psql -U postgres -p 8745 -c "ALTER USER postgres WITH ENCRYPTED PASSWORD 'VrPost@Server'"
-echo -n "Criando usuário VRSOFTWARE: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE USER vrsoftware WITH ENCRYPTED PASSWORD 'VrPost@Server';"
-echo -n "Criando role PGSQL: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE ROLE pgsql LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;"
-echo -n "Alterando usuário PGSQL: "
-/usr/bin/psql -U postgres -p 8745 -c "ALTER USER pgsql WITH ENCRYPTED PASSWORD 'VrPost@Server';"
-echo -n "Criando role CONTROLLER360: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE ROLE controller360 LOGIN  SUPERUSER  INHERIT  NOCREATEDB  NOCREATEROLE NOREPLICATION;"
-echo -n "Criando usuário ARCOS: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE USER arcos;"
-echo -n "Criando usuário ARQUITETURA: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE USER arquitetura;"
-echo -n "Criando usuário DESENVOLVIMENTO: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE USER desenvolvimento;"
-echo -n "Criando usuário IMPLANTACAO: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE USER implantacao;"
-echo -n "Criando usuário MERCAFACIL: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE USER mercafacil;"
-echo -n "Criando usuário MIXFISCAL: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE USER mixfiscal;"
-echo -n "Criando usuário PAGPOUCO: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE USER pagpouco;"
-echo -n "Criando usuário SUPORTE: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE USER suporte;"
-echo -n "Criando usuário SIMIX: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE USER simix;"
-echo -n "Criando usuário MARKETSCIENCE: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE USER marketscience;"
-echo -n "Criando usuário TRIBUTOFACIL: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE ROLE tributofacil;"
-echo -n "Criando database VR: "
-/usr/bin/psql -U postgres -p 8745 -c "CREATE DATABASE vr;"
+echo -n "Criando usuários: "
+/usr/bin/psql -U postgres -p 8745 -c "CREATE ROLE arcos WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;CREATE ROLE arquitetura WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;CREATE ROLE desenvolvimento WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;CREATE ROLE ecommerce WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;CREATE ROLE implantacao WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;CREATE ROLE margem WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;CREATE ROLE marketscience WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;CREATE ROLE mercafacil WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;CREATE ROLE mixfiscal WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;CREATE ROLE pagpouco WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;CREATE ROLE simix WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;CREATE ROLE suporte WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;CREATE ROLE tributofacil WITH LOGIN SUPERUSER INHERIT CREATEDB CREATEROLE REPLICATION;"
 
 # Voltando parâmetro para o valor default.
 
@@ -251,13 +221,15 @@ firewall-cmd --add-port=8745/tcp --permanent
 echo -e "\nRecarregando o módulo FIREWALLD: "
 firewall-cmd --reload
 
-systemctl restart smb nmb firewalld
-
 wget https://github.com/vrrecife/postgresql/raw/main/bk_vr-yum -O /usr/bin/bk_vr-yum
 
-sed -i '/# *  *  *  *  * user-name  command to be executed/ s/# *  *  *  *  * user-name  command to be executed/ 30 23 *  *  * root  /usr/bin/bk_vr-yum/' /etc/crontab
+cp /etc/crontab /etc/crontab.backup
+
+echo " 30 23 *  *  * root  /usr/bin/bk_vr-yum/" >> /etc/crontab
 
 chmod 777 /usr/bin/bk_vr-yum
+
+systemctl restart smb nmb firewalld crond
 
 echo -e "\nConfigurações finalizadas, reinicie o servidor! =D"
 
