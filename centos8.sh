@@ -171,9 +171,11 @@ sed -i '/#standard_conforming_strings/ s/#standard_conforming_strings/standard_c
 
 sed -i '/local/ s/md5/trust/' /var/lib/pgsql/12/data/pg_hba.conf
 sed -i '/local/ s/peer/trust/' /var/lib/pgsql/12/data/pg_hba.conf
+sed -i '/local/ s/ident/trust/' /var/lib/pgsql/12/data/pg_hba.conf
 
 sed -i '/host/ s/md5/trust/' /var/lib/pgsql/12/data/pg_hba.conf
 sed -i '/host/ s/peer/trust/' /var/lib/pgsql/12/data/pg_hba.conf
+sed -i '/host/ s/ident/trust/' /var/lib/pgsql/12/data/pg_hba.conf
 
 systemctl restart postgresql-12
 
@@ -225,6 +227,8 @@ firewall-cmd --reload
 
 wget https://github.com/vrrecife/postgresql/raw/main/bk_vr-yum -O /usr/bin/bk_vr-yum
 wget https://github.com/vrrecife/postgresql/raw/main/VR_Implantacao_Recife_v008.backup -O /vr/VR_Implantacao_Recife_v008.backup
+
+/usr/pgsql-12/bin/pg_restore -h localhost -p 8745 -U postgres --no-password -d vr --verbose "/vr/VR_Implantacao_Recife_v008.backup"
 
 cp /etc/crontab /etc/crontab.backup
 
