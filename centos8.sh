@@ -34,22 +34,22 @@ fi
 clear
 
 echo -e "\nAtualizando os repositórios DNF."
-dnf update 2> /dev/null && dnf upgrade 2> /dev/null
+dnf -y update 2> /dev/null && dnf -y upgrade 2> /dev/null
 
 # Instalando pacotes e utilitários.
 
 echo -e "\nInstalando utilitários e dependências necessárias..."
 sleep 2
-dnf install wget firewalld samba samba-client samba-common 2> /dev/null
+dnf -y install wget firewalld samba samba-client samba-common 2> /dev/null
 
 clear
 
 # Instalação POSTGRESQL12
 
 echo -e "\nInstalando PostgreSQL 12..."
-dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+dnf -y install https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 dnf -qy module disable postgresql
-dnf install -y postgresql12-server
+dnf -y install postgresql12-server
 dnf -y install postgresql12-contrib
 /usr/pgsql-12/bin/postgresql-12-setup initdb
 systemctl enable postgresql-12
