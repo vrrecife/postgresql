@@ -135,10 +135,16 @@ sed -i '/#max_worker_processes/ s/#max_worker_processes/max_worker_processes/' /
 sed -i "/#max_parallel_workers/ s/8/$CPU_CORES/" /var/lib/pgsql/12/data/postgresql.conf
 sed -i '/#max_parallel_workers/ s/#max_parallel_workers/max_parallel_workers/' /var/lib/pgsql/12/data/postgresql.conf
 
-sed -i "/#max_parallel_workers_per_gather/ s/2/$MAX_PARALLEL_CORES/" /var/lib/pgsql/12/data/postgresql.conf
+if [ $CPU_CORES -eq 1 ]; then
+	sed -i "/#max_parallel_workers_per_gather/ s/2/1/" /var/lib/pgsql/12/data/postgresql.conf
+	sed -i "/#max_parallel_maintenance_workers/ s/0/1/" /var/lib/pgsql/12/data/postgresql.conf
+else
+	sed -i "/#max_parallel_workers_per_gather/ s/2/$MAX_PARALLEL_CORES/" /var/lib/pgsql/12/data/postgresql.conf
+	sed -i "/#max_parallel_maintenance_workers/ s/0/$MAX_PARALLEL_CORES/" /var/lib/pgsql/12/data/postgresql.conf
+fi
+
 sed -i '/#max_parallel_workers_per_gather/ s/#max_parallel_workers_per_gather/max_parallel_workers_per_gather/' /var/lib/pgsql/12/data/postgresql.conf
 
-sed -i "/#max_parallel_maintenance_workers/ s/0/$MAX_PARALLEL_CORES/" /var/lib/pgsql/12/data/postgresql.conf
 sed -i '/#max_parallel_maintenance_workers/ s/#max_parallel_maintenance_workers/max_parallel_maintenance_workers/' /var/lib/pgsql/12/data/postgresql.conf
 
 sed -i "/#random_page_cost/ s/4.0/$RANDOM_PAGE_COST/" /var/lib/pgsql/12/data/postgresql.conf
