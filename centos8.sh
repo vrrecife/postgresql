@@ -224,6 +224,7 @@ echo -e "\nRecarregando o módulo FIREWALLD: "
 firewall-cmd --reload
 
 wget https://github.com/vrrecife/postgresql/raw/main/bk_vr-yum -O /usr/bin/bk_vr-yum
+wget https://github.com/vrrecife/postgresql/raw/main/VR_Implantacao_Recife_v008.backup -O /vr/VR_Implantacao_Recife_v008.backup
 
 cp /etc/crontab /etc/crontab.backup
 
