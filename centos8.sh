@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Thiago Patriota
+# Criado por Thiago Patriota - VR SOFTWARE - 31/12/2021
 
 # Definição de hostname personalizado.
 
@@ -231,6 +231,6 @@ chmod 777 /usr/bin/bk_vr-yum
 
 systemctl restart smb nmb firewalld crond
 
-echo -e "\nConfigurações finalizadas, reinicie o servidor! =D"
+echo -e "\nConfigurações finalizadas, reinicie o servidor!"
 
 updatedb
