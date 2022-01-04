@@ -225,7 +225,7 @@ wget https://github.com/vrrecife/postgresql/raw/main/bk_vr-yum -O /usr/bin/bk_vr
 
 cp /etc/crontab /etc/crontab.backup
 
-echo " 30 23 *  *  * root  /usr/bin/bk_vr-yum/" >> /etc/crontab
+echo "  30 23 *  *  * root  /usr/bin/bk_vr-yum" >> /etc/crontab
 
 chmod 777 /usr/bin/bk_vr-yum
 
