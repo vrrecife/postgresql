@@ -14,9 +14,13 @@ cd FirebirdSS-2.5.9.27139-0.amd64
 
 sudo ./install.sh
 
-systemctl start firebird.service
+cd 
 
 rm FirebirdSS-2.5.9.27139-0.amd64.tar.gz
 
 rm -rf FirebirdSS-2.5.9.27139-0.amd64/
+
+systemctl start firebird.service
+
+systemctl status firebird.service
 
