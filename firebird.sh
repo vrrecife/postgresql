@@ -16,7 +16,7 @@ sudo ./install.sh
 
 systemctl start firebird.service
 
-rm -rf FirebirdSS-2.5.9.27139-0.amd64.tar.gz
+rm FirebirdSS-2.5.9.27139-0.amd64.tar.gz
 
 rm -rf FirebirdSS-2.5.9.27139-0.amd64/
 
