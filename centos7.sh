@@ -1,9 +1,5 @@
 #!/bin/bash
 
-su -u
-
-sleep 5
-
 yum -y update 2> /dev/null && yum -y upgrade 2> /dev/null
 
 yum -y install samba samba-client samba-common cifs-utils firewalld 2> /dev/null
