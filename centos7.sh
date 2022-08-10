@@ -111,6 +111,15 @@ sed -i '/#port/ s/#port/port/' /var/lib/pgsql/12/data/postgresql.conf
 
 sed -i "/max_connections/ s/100/$MAX_CONNECTIONS/" /var/lib/pgsql/12/data/postgresql.conf
 
+sed -i '/#tcp_keepalives_idle/ s/0/10/' /var/lib/pgsql/12/data/postgresql.conf
+sed -i '/#tcp_keepalives_idle/ s/#tcp_keepalives_idle/tcp_keepalives_idle/' /var/lib/pgsql/12/data/postgresql.conf
+
+sed -i '/#tcp_keepalives_interval/ s/0/10/' /var/lib/pgsql/12/data/postgresql.conf
+sed -i '/#tcp_keepalives_interval/ s/#tcp_keepalives_interval/tcp_keepalives_interval/' /var/lib/pgsql/12/data/postgresql.conf
+
+sed -i '/#tcp_keepalives_count/ s/0/10/' /var/lib/pgsql/12/data/postgresql.conf
+sed -i '/#tcp_keepalives_count/ s/#tcp_keepalives_count/tcp_keepalives_count/' /var/lib/pgsql/12/data/postgresql.conf
+
 sed -i "/shared_buffers/ s/128/$SHARED_BUFFERS/" /var/lib/pgsql/12/data/postgresql.conf
 
 sed -i "/#work_mem/ s/4/$WORK_MEM/" /var/lib/pgsql/12/data/postgresql.conf
@@ -131,6 +140,10 @@ sed -i '/#max_parallel_maintenance_workers/ s/#max_parallel_maintenance_workers/
 
 sed -i "/#random_page_cost/ s/4.0/$RANDOM_PAGE_COST/" /var/lib/pgsql/12/data/postgresql.conf
 sed -i '/#random_page_cost/ s/#random_page_cost/random_page_cost/' /var/lib/pgsql/12/data/postgresql.conf
+
+sed -i '/#cpu_tuple_cost/ s/0.01/0.03/' /var/lib/pgsql/12/data/postgresql.conf
+sed -i '/#cpu_tuple_cost/ s/#cpu_tuple_cost/cpu_tuple_cost/' /var/lib/pgsql/12/data/postgresql.conf
+
 sed -i "/#effective_io_concurrency/ s/1/$EFFECTIVE_IO_CONCURRENCY/" /var/lib/pgsql/12/data/postgresql.conf
 sed -i '/#effective_io_concurrency/ s/#effective_io_concurrency/effective_io_concurrency/' /var/lib/pgsql/12/data/postgresql.conf
 
@@ -149,6 +162,15 @@ sed -i '/#maintenance_work_mem/ s/#maintenance_work_mem/maintenance_work_mem/' /
 
 sed -i '/#default_statistics_target/ s/#default_statistics_target/default_statistics_target/' /var/lib/pgsql/12/data/postgresql.conf
 
+sed -i '/#autovacuum_max_workers/ s/3/2/' /var/lib/pgsql/12/data/postgresql.conf
+sed -i '/#autovacuum_max_workers/ s/#autovacuum_max_workers/autovacuum_max_workers/' /var/lib/pgsql/12/data/postgresql.conf
+
+sed -i '/#autovacuum_vacuum_cost_limit/ s/-1/3000/' /var/lib/pgsql/12/data/postgresql.conf
+sed -i '/#autovacuum_vacuum_cost_limit/ s/#autovacuum_vacuum_cost_limit/autovacuum_vacuum_cost_limit/' /var/lib/pgsql/12/data/postgresql.conf
+
+sed -i '/#idle_in_transaction_session_timeout/ s/0/300000/' /var/lib/pgsql/12/data/postgresql.conf
+sed -i '/#idle_in_transaction_session_timeout/ s/#idle_in_transaction_session_timeout/idle_in_transaction_session_timeout/' /var/lib/pgsql/12/data/postgresql.conf
+
 sed -i '/min_wal_size/ s/80MB/1GB/' /var/lib/pgsql/12/data/postgresql.conf
 sed -i '/max_wal_size/ s/1/4/' /var/lib/pgsql/12/data/postgresql.conf
 
@@ -159,9 +181,11 @@ sed -i '/#standard_conforming_strings/ s/#standard_conforming_strings/standard_c
 
 sed -i '/local/ s/md5/trust/' /var/lib/pgsql/12/data/pg_hba.conf
 sed -i '/local/ s/peer/trust/' /var/lib/pgsql/12/data/pg_hba.conf
+sed -i '/local/ s/ident/trust/' /var/lib/pgsql/12/data/pg_hba.conf
 
 sed -i '/host/ s/md5/trust/' /var/lib/pgsql/12/data/pg_hba.conf
 sed -i '/host/ s/peer/trust/' /var/lib/pgsql/12/data/pg_hba.conf
+sed -i '/host/ s/ident/trust/' /var/lib/pgsql/12/data/pg_hba.conf
 
 systemctl restart postgresql-12
 
@@ -205,6 +229,7 @@ echo -n "Criando database VR: "
 # Voltando parâmetro para o valor default.
 
 # sed -i '/local/ s/trust/peer/' /var/lib/pgsql/12/data/pg_hba.conf
+
 # sed -i '/host/ s/trust/peer/' /var/lib/pgsql/12/data/pg_hba.conf
 
 systemctl restart postgresql-12
