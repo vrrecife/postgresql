@@ -238,6 +238,4 @@ systemctl restart smb nmb firewalld postgresql-12
 # systemctl disable firewalld
 # systemctl stop firewalld
 
-echo -e "\nConfigurações finalizadas, reinicie o servidor! =D"
-
-updatedb
+echo -e "\nConfigurações finalizadas, reinicie o servidor!"
