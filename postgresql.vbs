@@ -1,4 +1,4 @@
-'Criado por Thiago Patriota - VR SOFTWARE - 31/12/2021
+'Criado por Thiago Patriota - VR SOFTWARE - 25/09/2022
 strAnswer = InputBox("INFORME A QUANTIDADE DE CONEXOES AO BANCO (TOTAL + 10%):", "NUMERO DE CONEXOES AO BANCO", "50")
 strComputer2 = "."
 Set objWMI = GetObject("winmgmts:" _
@@ -16,7 +16,7 @@ Set objWMI = GetObject("winmgmts:" _
 Set colComputer1 = objWMI.ExecQuery _
 ("Select * from Win32_Processor")
 For Each objComputer in colComputer1 
-	strComputer1=objComputer.NumberOfCores
+	strComputer1=objComputer.NumberOfLogicalProcessors
 Next
 strComputer = "."
 Set objWMI = GetObject("winmgmts:" _
@@ -29,14 +29,14 @@ For Each objComputer in colComputer
 Next
 CPU_CORES = strComputer1
 CPU_CORES_PARALLEL = CPU_CORES/2
-MEM_TOTAL_B = strComputer*0,75
+MEM_TOTAL_B = (strComputer*0.75)
 MEM_TOTAL_KB = ROUND(MEM_TOTAL_B/1024)
 MEM_TOTAL_MB = ROUND(MEM_TOTAL_KB/1024)
 MEM_TOTAL_GB = ROUND(MEM_TOTAL_MB/1024)
 SHARED_BUFFERS = ROUND(MEM_TOTAL_MB/4)
-EFFECTIVE_CACHE_SIZE = ROUND(MEM_TOTAL_MB/4*3)
+EFFECTIVE_CACHE_SIZE = ROUND((MEM_TOTAL_MB/4)*3)
 MAINTENANCE_WORK_MEM = ROUND(MEM_TOTAL_MB/16)
-WORK_MEM = ROUND(MEM_TOTAL_KB/16/strAnswer)
+WORK_MEM = ROUND((0.5*MEM_TOTAL_KB/16)/strAnswer)
 Set objFS = CreateObject("Scripting.FileSystemObject")
 strFile = "C:\Program Files\PostgreSQL\12\data\postgresql.conf.bkp"
 Set objFile = objFS.OpenTextFile(strFile)
