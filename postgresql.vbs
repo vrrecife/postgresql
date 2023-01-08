@@ -1,5 +1,5 @@
 'Criado por Thiago Patriota - VR SOFTWARE - 25/09/2022
-strAnswer = InputBox("INFORME A QUANTIDADE DE CONEXOES AO BANCO (TOTAL + 10%):", "NUMERO DE CONEXOES AO BANCO", "50")
+strAnswer = InputBox("INFORME A QUANTIDADE DE CONEXOES AO BANCO (TOTAL + 10%):", "NUMERO DE CONEXOES AO BANCO", "100")
 strComputer2 = "."
 Set objWMI = GetObject("winmgmts:" _
 & "{impersonationLevel=impersonate}!\\" _ 
