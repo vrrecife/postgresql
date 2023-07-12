@@ -23,9 +23,9 @@ Set objWMI = GetObject("winmgmts:" _
 & "{impersonationLevel=impersonate}!\\" _ 
 & strComputer & "\root\cimv2") 
 Set colComputer = objWMI.ExecQuery _
-("Select * from Win32_ComputerSystem")
+("Select * from Win32_OperatingSystem")
 For Each objComputer in colComputer 
-	strComputer=objComputer.TotalPhysicalMemory
+	strComputer=objComputer.FreePhysicalMemory
 Next
 CPU_CORES = strComputer1
 CPU_CORES_PARALLEL = CPU_CORES/2
