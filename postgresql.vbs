@@ -1,4 +1,4 @@
-'Criado por Thiago Patriota - VR SOFTWARE - 25/09/2022
+'Criado por Thiago Patriota - VR SOFTWARE - 07/03/2024
 strAnswer = InputBox("INFORME A QUANTIDADE DE CONEXOES AO BANCO (TOTAL + 10%):", "NUMERO DE CONEXOES AO BANCO", "100")
 strComputer2 = "."
 Set objWMI = GetObject("winmgmts:" _
@@ -28,9 +28,20 @@ For Each objComputer in colComputer
 	strComputer=objComputer.FreePhysicalMemory
 Next
 CPU_CORES = strComputer1
-CPU_CORES_PARALLEL = CPU_CORES/2
-MEM_TOTAL_B = (strComputer*0.75)
-MEM_TOTAL_KB = ROUND(MEM_TOTAL_B/1024)
+'CPU_CORES_PARALLEL = ROUND(CPU_CORES/2)
+If CPU_CORES < 4 Then
+    CPU_CORES_PARALLEL_PER_GATHER = 1
+Else
+    CPU_CORES_PARALLEL_PER_GATHER = ROUND(CPU_CORES/2)
+End If
+If CPU_CORES < 4 Then
+    CPU_CORES_PARALLEL_WORKERS = 1
+ElseIf CPU_CORES >= 4 And CPU_CORES < 9 Then
+    CPU_CORES_PARALLEL_WORKERS = ROUND(CPU_CORES/2)
+Else
+    CPU_CORES_PARALLEL_WORKERS = 4
+End If
+MEM_TOTAL_KB = ROUND(strComputer*0.75)
 MEM_TOTAL_MB = ROUND(MEM_TOTAL_KB/1024)
 MEM_TOTAL_GB = ROUND(MEM_TOTAL_MB/1024)
 SHARED_BUFFERS = ROUND(MEM_TOTAL_MB/4)
@@ -51,15 +62,15 @@ Do Until objFile.AtEndOfStream
 			strLine = Replace(strLine,"#random_page_cost = 4.0","random_page_cost = 4.0")
 		End If
 	End If
-'	If InStr(strLine,"#effective_io_concurrency = 0")> 0 Then
-'		If strComputer2 = 4 Then
-'			strLine = Replace(strLine,"#effective_io_concurrency = 0","effective_io_concurrency = 200")
-'		ElseIf strComputer2 = 3 Then
-'			strLine = Replace(strLine,"#effective_io_concurrency = 0","effective_io_concurrency = 2")
-'		Else
-'			strLine = Replace(strLine,"#effective_io_concurrency = 0","effective_io_concurrency = 2")
-'		End If
-'	End If
+	If InStr(strLine,"#effective_io_concurrency = 0")> 0 Then
+		If strComputer2 = 4 Then
+			strLine = Replace(strLine,"#effective_io_concurrency = 0","effective_io_concurrency = 200")
+		ElseIf strComputer2 = 3 Then
+			strLine = Replace(strLine,"#effective_io_concurrency = 0","effective_io_concurrency = 2")
+		Else
+			strLine = Replace(strLine,"#effective_io_concurrency = 0","effective_io_concurrency = 2")
+		End If
+	End If
 	If InStr(strLine,"port = 5432")> 0 Then
 		strLine = Replace(strLine,"port = 5432","port = 8745")
 	End If
@@ -75,19 +86,22 @@ Do Until objFile.AtEndOfStream
 	If InStr(strLine,"shared_buffers = 128MB")> 0 Then
 		strLine = Replace(strLine,"shared_buffers = 128MB","shared_buffers = "&SHARED_BUFFERS&"MB")
 	End If
+	If InStr(strLine,"#huge_pages = try")> 0 Then
+		strLine = Replace(strLine,"#huge_pages = try","huge_pages = off")
+	End If
 	If InStr(strLine,"#maintenance_work_mem = 64MB")> 0 Then
 		strLine = Replace(strLine,"#maintenance_work_mem = 64MB","maintenance_work_mem = "&MAINTENANCE_WORK_MEM&"MB")
 	End If
-	If InStr(strLine,"#max_worker_processes = 8")> 0 Then
+	If InStr(strLine,"#max_worker_processes = 8")> 0 and CPU_CORES > 3 Then
 		strLine = Replace(strLine,"#max_worker_processes = 8","max_worker_processes = "&CPU_CORES)
 	End If
-	If InStr(strLine,"#max_parallel_maintenance_workers = 2")> 0 Then
-		strLine = Replace(strLine,"#max_parallel_maintenance_workers = 2","max_parallel_maintenance_workers = "&CPU_CORES_PARALLEL)
+	If InStr(strLine,"#max_parallel_maintenance_workers = 2")> 0 and CPU_CORES > 3 Then
+		strLine = Replace(strLine,"#max_parallel_maintenance_workers = 2","max_parallel_maintenance_workers = "&CPU_CORES_PARALLEL_WORKERS)
 	End If
-	If InStr(strLine,"#max_parallel_workers_per_gather = 2")> 0 Then
-		strLine = Replace(strLine,"#max_parallel_workers_per_gather = 2","max_parallel_workers_per_gather = "&CPU_CORES_PARALLEL)
+	If InStr(strLine,"#max_parallel_workers_per_gather = 2")> 0 and CPU_CORES > 3 Then
+		strLine = Replace(strLine,"#max_parallel_workers_per_gather = 2","max_parallel_workers_per_gather = "&CPU_CORES_PARALLEL_PER_GATHER)
 	End If
-	If InStr(strLine,"#max_parallel_workers = 8")> 0 Then
+	If InStr(strLine,"#max_parallel_workers = 8")> 0 and CPU_CORES > 3 Then
 		strLine = Replace(strLine,"#max_parallel_workers = 8","max_parallel_workers = "&CPU_CORES)
 	End If
 	If InStr(strLine,"#autovacuum_max_workers = 3")> 0 Then
