@@ -1,5 +1,6 @@
 'Criado por Thiago Patriota - VR SOFTWARE - 25/09/2022
-strAnswer = InputBox("INFORME A QUANTIDADE DE CONEXOES AO BANCO (TOTAL + 10%):", "NUMERO DE CONEXOES AO BANCO", "100")
+strAnswer = InputBox("INFORME A QUANTIDADE DE CONEXOES AO BANCO (TOTAL + 10%):", "NUMERO DE CONEXOES AO BANCO", "150")
+strAnswer2 = InputBox("INFORME A PORTA DO BANCO:", "PORTA BANCO VR POSTGRESQL", "8745")
 strComputer2 = "."
 Set objWMI = GetObject("winmgmts:" _
 & "{impersonationLevel=impersonate}!\\" _ 
@@ -65,7 +66,7 @@ Do Until objFile.AtEndOfStream
 '		End If
 '	End If
 	If InStr(strLine,"port = 5432")> 0 Then
-		strLine = Replace(strLine,"port = 5432","port = 8745")
+		strLine = Replace(strLine,"port = 5432","port = strAnswer2")
 	End If
 	If InStr(strLine,"#huge_pages = try")> 0 Then
 		strLine = Replace(strLine,"#huge_pages = try","huge_pages = off	")
