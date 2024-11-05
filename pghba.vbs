@@ -1,7 +1,7 @@
 ' Caminho do arquivo original e do novo arquivo
 Dim originalFilePath, newFilePath
 originalFilePath = "C:\Program Files\PostgreSQL\12\data\pg_hba.conf.bkp"
-newFilePath = "C:\vr\pg_hba.conf"
+newFilePath = "C:\vr\tmp\pg_hba.conf" ' Novo caminho para o arquivo de saída
 
 ' Criar objeto de sistema de arquivos
 Dim fso, textStream, lines, modifiedLines, line
@@ -43,12 +43,7 @@ If fso.FileExists(originalFilePath) Then
             inserted = True
         End If
     Next
-    
-    ' Criar diretório se não existir
-    If Not fso.FolderExists("C:\vr") Then
-        fso.CreateFolder "C:\vr"
-    End If
-    
+      
     ' Gravar o conteúdo modificado no novo arquivo
     Set textStream = fso.CreateTextFile(newFilePath, True)
     For Each line In modifiedLines.Items
@@ -56,7 +51,10 @@ If fso.FileExists(originalFilePath) Then
     Next
     textStream.Close
     
-    WScript.Echo "Arquivo editado e salvo em: " & newFilePath
+    WScript.Echo "Arquivo editado e salvo em: " & newFilePath ' Mensagem de sucesso
+    ' Limpar objetos
+    Set textStream = Nothing
+    Set fso = Nothing
 Else
-    WScript.Echo "Arquivo original não encontrado: " & originalFilePath
+    WScript.Echo "O arquivo " & originalFilePath & " não existe."
 End If
