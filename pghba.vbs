@@ -1,10 +1,9 @@
-' Caminho do arquivo original e do novo arquivo
-Dim originalFilePath, newFilePath
+' Caminho do arquivo original
+Dim originalFilePath
 originalFilePath = "C:\Program Files\PostgreSQL\12\data\pg_hba.conf.bkp"
-newFilePath = "C:\vr\tmp\pg_hba.conf" ' Novo caminho para o arquivo de saída
 
 ' Criar objeto de sistema de arquivos
-Dim fso, textStream, lines, modifiedLines, line
+Dim fso, textStream, lines, line
 Set fso = CreateObject("Scripting.FileSystemObject")
 
 ' Verificar se o arquivo original existe
@@ -16,15 +15,13 @@ If fso.FileExists(originalFilePath) Then
     
     ' Dividir o conteúdo em linhas
     lines = Split(lines, vbCrLf)
-    Set modifiedLines = CreateObject("Scripting.Dictionary")
     
     ' Flag para controlar a inserção
     Dim inserted
     inserted = False
     
     ' Loop através de cada linha para modificar
-    Dim i, newIndex
-    newIndex = 0
+    Dim i
     For i = 0 To UBound(lines)
         line = lines(i)
         
@@ -33,25 +30,16 @@ If fso.FileExists(originalFilePath) Then
             line = Replace(line, "md5", "trust")
         End If
         
-        modifiedLines.Add newIndex, line
-        newIndex = newIndex + 1
+        ' Escrever a linha modificada na saída
+        WScript.Echo line
         
         ' Encontrar a linha "# IPv4 local connections:" e adicionar a nova linha após ela
         If Trim(line) = "# IPv4 local connections:" And Not inserted Then
-            modifiedLines.Add newIndex, "host    all             all             0.0.0.0/0            trust"
-            newIndex = newIndex + 1
+            WScript.Echo "host    all             all                   0.0.0.0/0            trust"
             inserted = True
         End If
     Next
-      
-    ' Gravar o conteúdo modificado no novo arquivo
-    Set textStream = fso.CreateTextFile(newFilePath, True)
-    For Each line In modifiedLines.Items
-        textStream.WriteLine line
-    Next
-    textStream.Close
     
-    WScript.Echo "Arquivo editado e salvo em: " & newFilePath ' Mensagem de sucesso
     ' Limpar objetos
     Set textStream = Nothing
     Set fso = Nothing
