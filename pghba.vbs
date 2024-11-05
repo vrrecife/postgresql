@@ -1,3 +1,4 @@
+'Criado por Thiago Patriota - VR SOFTWARE - 25/09/2022 Atualizado em 05/11/2024
 ' Caminho do arquivo original
 Dim originalFilePath
 originalFilePath = "C:\Program Files\PostgreSQL\12\data\pg_hba.conf.bkp"
