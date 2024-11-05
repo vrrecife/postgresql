@@ -66,7 +66,7 @@ Do Until objFile.AtEndOfStream
 '		End If
 '	End If
 	If InStr(strLine,"port = 5432")> 0 Then
-		strLine = Replace(strLine,"port = 5432","port = strAnswer2")
+		strLine = Replace(strLine,"port = 5432","port = " & strAnswer2)
 	End If
 	If InStr(strLine,"#huge_pages = try")> 0 Then
 		strLine = Replace(strLine,"#huge_pages = try","huge_pages = off	")
