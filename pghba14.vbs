@@ -26,9 +26,9 @@ If fso.FileExists(originalFilePath) Then
     For i = 0 To UBound(lines)
         line = lines(i)
         
-        ' Substituir 'md5' por 'trust', exceto na linha com explicação de métodos
+        ' Substituir 'scram-sha-256' por 'trust', exceto na linha com explicação de métodos
         If InStr(line, "# METHOD can be ""trust"", ""reject"", ""md5"", ""password"", ""scram-sha-256""") = 0 Then
-            line = Replace(line, "md5", "trust")
+            line = Replace(line, "scram-sha-256", "trust")
         End If
         
         ' Escrever a linha modificada na saída
