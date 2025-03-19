@@ -125,6 +125,9 @@ Do Until objFile.AtEndOfStream
 	If InStr(strLine,"#checkpoint_completion_target = 0.5")> 0 Then
 		strLine = Replace(strLine,"#checkpoint_completion_target = 0.5","checkpoint_completion_target = 0.9")
 	End If
+	If InStr(strLine,"#checkpoint_completion_target = 0.9")> 0 Then
+		strLine = Replace(strLine,"#checkpoint_completion_target = 0.9","checkpoint_completion_target = 0.9")
+	End If
 	If InStr(strLine,"#work_mem = 4MB")> 0 Then
 		strLine = Replace(strLine,"#work_mem = 4MB","work_mem = "&WORK_MEM&"kB")
 	End If
