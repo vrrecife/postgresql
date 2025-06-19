@@ -1,4 +1,4 @@
-'Criado por Thiago Patriota - VR SOFTWARE - 25/09/2022 Atualizado em 20/02/2025
+'Criado por Thiago Patriota - VR SOFTWARE - 25/09/2022 Atualizado em 19/06/2025
 ' Caminho do arquivo original
 Dim originalFilePath
 originalFilePath = "C:\Program Files\PostgreSQL\14\data\pg_hba.conf.bkp"
@@ -26,9 +26,9 @@ If fso.FileExists(originalFilePath) Then
     For i = 0 To UBound(lines)
         line = lines(i)
         
-        ' Substituir 'scram-sha-256' por 'trust', exceto na linha com explicação de métodos
+        ' Substituir 'scram-sha-256' por 'md5', exceto na linha com explicação de métodos
         If InStr(line, "# METHOD can be ""trust"", ""reject"", ""md5"", ""password"", ""scram-sha-256""") = 0 Then
-            line = Replace(line, "scram-sha-256", "trust")
+            line = Replace(line, "scram-sha-256", "md5")
         End If
         
         ' Escrever a linha modificada na saída
@@ -36,7 +36,7 @@ If fso.FileExists(originalFilePath) Then
         
         ' Encontrar a linha "# IPv4 local connections:" e adicionar a nova linha após ela
         If Trim(line) = "# IPv4 local connections:" And Not inserted Then
-            WScript.Echo "host    all             all                   0.0.0.0/0            trust"
+            WScript.Echo "host	all		all		0.0.0.0/0		md5"
             inserted = True
         End If
     Next
