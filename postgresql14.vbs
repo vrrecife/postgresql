@@ -69,7 +69,13 @@ Do Until objFile.AtEndOfStream
 		strLine = Replace(strLine,"port = 5432","port = "&strAnswer2)
 	End If
 	If InStr(strLine,"#huge_pages = try")> 0 Then
-		strLine = Replace(strLine,"#huge_pages = try","huge_pages = off	")
+		strLine = Replace(strLine,"#huge_pages = try","huge_pages = try	")
+	End If
+	If InStr(strLine,"#jit = on")> 0 Then
+		strLine = Replace(strLine,"#jit = on","jit = on	")
+	End If
+	If InStr(strLine,"#wal_compression = off")> 0 Then
+		strLine = Replace(strLine,"#wal_compression = off","wal_compression = on	")
 	End If
 	If InStr(strLine,"#wal_buffers = -1")> 0 Then
         	strLine = Replace(strLine,"#wal_buffers = -1","wal_buffers = 16MB")
