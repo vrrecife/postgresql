@@ -1,4 +1,4 @@
-'Criado por Thiago Patriota - VR SOFTWARE - 25/09/2022 Atualizado em 20/02/2025
+'Criado por Thiago Patriota - VR SOFTWARE - 25/09/2022 Atualizado em 29/05/2026
 strAnswer = InputBox("INFORME A QUANTIDADE DE CONEXOES AO BANCO (TOTAL + 10%):", "NUMERO DE CONEXOES AO BANCO", "150")
 strAnswer2 = InputBox("INFORME A PORTA DO BANCO:", "PORTA BANCO VR POSTGRESQL", "8745")
 strComputer2 = "."
